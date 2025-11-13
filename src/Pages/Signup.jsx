@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import React, { use, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../Context/AuthContext";
 
 const SignUp = () => {
+  const { createUser, updateUserProfile, handleGoogleLogIn } = use(AuthContext);
   const [passwordError, setPasswordError] = useState("");
+  const Navigate = useNavigate();
 
   const handleRegister = (event) => {
     event.preventDefault();
     const form = event.target;
-    const name = form.name.value;
-    const photo = form.photo.value;
+    const name = form.displayName.value;
+    const photo = form.photoURL.value;
     const email = form.email.value;
     const password = form.password.value;
 
@@ -27,8 +30,38 @@ const SignUp = () => {
       setPasswordError("Password should be at least one Lowercase letter");
       return;
     }
+
+    // create user
+    createUser(email, password)
+      .then((result) => {
+        alert("You are registered successfully");
+        console.log(result.user);
+        updateUserProfile(name, photo)
+          .then(() => {
+            console.log("profile updated!!!");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        form.reset();
+        Navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  // handle google signIn
+  const handleGoogleSignIn = () => {
+    handleGoogleLogIn()
+      .then((result) => {
+        console.log(result.user);
+        Navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">
@@ -44,6 +77,7 @@ const SignUp = () => {
               placeholder="Name"
             />
 
+            {/* photoURL */}
             <label className="label">PhotoURL</label>
             <input
               type="text"
@@ -67,17 +101,20 @@ const SignUp = () => {
               className="input rounded-full focus:border-0 focus:outline-gray-200"
               placeholder="Password"
             />
-            <div>
-              <a className="link link-hover">Forgot password?</a>
-            </div>
-            <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-pink-500 to-red-600">
+            {passwordError && (
+              <p className="font-bold text-red-500">{passwordError}</p>
+            )}
+            <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
               Register
             </button>
           </fieldset>
         </form>
 
         {/* Google */}
-        <button className="btn bg-white rounded-full text-black border-[#e5e5e5]">
+        <button
+          onClick={handleGoogleSignIn}
+          className="btn bg-white rounded-full text-black border-[#e5e5e5]"
+        >
           <svg
             aria-label="Google logo"
             width="16"

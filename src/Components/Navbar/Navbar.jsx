@@ -1,7 +1,20 @@
-import React from "react";
+import React, { use } from "react";
 import { NavLink } from "react-router";
 import logo from "../../assets/lifestyle.png";
+import { AuthContext } from "../../Context/AuthContext";
 const Navbar = () => {
+  const { user, userSignOut } = use(AuthContext);
+
+  const handleSignOutUser = () => {
+    userSignOut()
+      .then(() => {
+        console.log("Signout Successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm max-w-7xl mx-auto">
@@ -62,12 +75,56 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end gap-2">
-          <NavLink to="/login">
-            <a className="btn btn-secondary">Login</a>
-          </NavLink>
-          <NavLink to="/signup">
-            <a className="btn btn-secondary">SignUp</a>
-          </NavLink>
+          {user ? (
+            <div className="dropdown dropdown-end z-50">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-9 border-2 border-gray-300 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    referrerPolicy="no-referrer"
+                    src={
+                      user.photoURL ||
+                      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    }
+                  />
+                </div>
+              </div>
+              <ul
+                tabIndex="-1"
+                className="menu  menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow"
+              >
+                <div className=" pb-3">
+                  <li className="text-sm font-bold">{user.displayName}</li>
+                  <li className="text-xs">{user.email}</li>
+                </div>
+                <li>
+                  <button
+                    onClick={handleSignOutUser}
+                    className="btn btn-xs text-left bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850] text-white"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <NavLink to="/login">
+                <a className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
+                  Login
+                </a>
+              </NavLink>
+              <NavLink to="/signup">
+                <a className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
+                  SignUp
+                </a>
+              </NavLink>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,20 +1,51 @@
-import React from "react";
+import React, { use } from "react";
 import { FaGoogle } from "react-icons/fa6";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../Context/AuthContext";
 
 const Login = () => {
+  const { signInUser, handleGoogleLogIn } = use(AuthContext);
+  const Navigate = useNavigate();
+
+  // handle Login
   const handleLogIn = (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
+
+    // signInUser
+    signInUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        alert("You are signed in successfully");
+        console.log(user);
+        Navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  // handle google signIn
+  const handleGooglesignIn = () => {
+    handleGoogleLogIn()
+      .then((result) => {
+        console.log(result.user);
+        Navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="card bg-base-100  w-full mx-auto max-w-sm shrink-0 shadow-2xl border border-gray-200">
       <div className="card-body">
         <h1 className="text-3xl font-bold text-center">Login</h1>
         <form onSubmit={handleLogIn}>
           <fieldset className="fieldset">
+            {/* Email */}
             <label className="label">Email</label>
             <input
               type="email"
@@ -23,6 +54,7 @@ const Login = () => {
               placeholder="Email"
             />
 
+            {/* Password */}
             <label className="label">Password</label>
             <input
               type="password"
@@ -33,14 +65,17 @@ const Login = () => {
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
-            <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-pink-500 to-red-600">
+            <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
               Login
             </button>
           </fieldset>
         </form>
 
         {/* Google */}
-        <button className="btn bg-white rounded-full text-black border-[#e5e5e5]">
+        <button
+          onClick={handleGooglesignIn}
+          className="btn bg-white rounded-full text-black border-[#e5e5e5]"
+        >
           <svg
             aria-label="Google logo"
             width="16"
