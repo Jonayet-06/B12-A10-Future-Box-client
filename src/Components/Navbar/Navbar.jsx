@@ -42,16 +42,21 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a>Home</a>
+                <NavLink to="/">Home</NavLink>
               </li>
+
               <li>
-                <a>Public Habits</a>
+                <NavLink to="/publichabits">Public Habits</NavLink>
               </li>
+
               <li>
-                <a>My Habits</a>
+                <NavLink to="/myhabits">My Habits</NavLink>
               </li>
+
               <li>
-                <a>Add Habits</a>
+                <NavLink to="/addhabits">
+                  <a>Add Habits</a>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -61,16 +66,19 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <a>Home</a>
+              <NavLink to="/">Home</NavLink>
             </li>
+
             <li>
-              <a>Public Habits</a>
+              <NavLink to="/publichabits">Public Habits</NavLink>
             </li>
+
             <li>
-              <a>My Habits</a>
+              <NavLink to="/myhabits">My Habits</NavLink>
             </li>
+
             <li>
-              <a>Add Habits</a>
+              <NavLink to="/addhabits">Add Habits</NavLink>
             </li>
           </ul>
         </div>
