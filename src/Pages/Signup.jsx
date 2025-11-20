@@ -1,6 +1,7 @@
 import React, { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const { createUser, updateUserProfile, handleGoogleLogIn } = use(AuthContext);
@@ -34,7 +35,13 @@ const SignUp = () => {
     // create user
     createUser(email, password)
       .then((result) => {
-        alert("You are registered successfully");
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "You has been registered successfully",
+          showConfirmButton: false,
+          timer: 2000,
+        });
         console.log(result.user);
         updateUserProfile(name, photo)
           .then(() => {

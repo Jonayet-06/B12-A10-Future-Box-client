@@ -5,14 +5,14 @@ import ReleventOne from "../Relevent/ReleventOne";
 import Relevent from "../Relevent/Relevent";
 import LatestHabits from "../LatestHabits/LatestHabits";
 
-const latestHabitsPromise = fetch("http://localhost:3000/latest-habits").then(
-  (res) => res.json()
-);
+// const latestHabitsPromise = fetch("http://localhost:3000/latest-habits").then(
+//   (res) => res.json()
+// );
 const Home = () => {
   return (
     <div className="max-w-7xl mx-auto">
       <Banner></Banner>
-      <LatestHabits latestHabitsPromise={latestHabitsPromise}></LatestHabits>
+      <LatestHabits></LatestHabits>
       <WhyBuildHabit></WhyBuildHabit>
       <Relevent></Relevent>
       <ReleventOne></ReleventOne>

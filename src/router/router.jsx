@@ -8,11 +8,14 @@ import PublicHabits from "../Components/PublicHabits/PublicHabits";
 import MyHabits from "../Components/MyHabits/MyHabits";
 import AddHabits from "../Components/AddHabits/AddHabits";
 import PrivateRoute from "../Routes/PrivateRoute";
+import HabitDetails from "../Components/HabitDetails/HabitDetails";
+import ErrorPage from "../Components/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayouts></RootLayouts>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -31,8 +34,21 @@ const router = createBrowserRouter([
         element: <PublicHabits></PublicHabits>,
       },
       {
+        path: "habitdetails/:id",
+        loader: () => fetch(`http://localhost:3000/habits`),
+        element: (
+          <PrivateRoute>
+            <HabitDetails></HabitDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/myhabits",
-        element: <MyHabits></MyHabits>,
+        element: (
+          <PrivateRoute>
+            <MyHabits></MyHabits>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/addhabits",

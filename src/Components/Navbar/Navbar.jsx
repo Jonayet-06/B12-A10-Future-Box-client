@@ -54,9 +54,7 @@ const Navbar = () => {
               </li>
 
               <li>
-                <NavLink to="/addhabits">
-                  <a>Add Habits</a>
-                </NavLink>
+                <NavLink to="/addhabits">Add Habits</NavLink>
               </li>
             </ul>
           </div>
@@ -121,15 +119,17 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex gap-2">
-              <NavLink to="/login">
-                <a className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
-                  Login
-                </a>
+              <NavLink
+                to="/login"
+                className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]"
+              >
+                Login
               </NavLink>
-              <NavLink to="/signup">
-                <a className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
-                  SignUp
-                </a>
+              <NavLink
+                to="/signup"
+                className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]"
+              >
+                SignUp
               </NavLink>
             </div>
           )}

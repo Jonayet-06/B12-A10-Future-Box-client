@@ -6,3 +6,7 @@
 * {
   font-family: "Roboto", sans-serif;
 }
+
+a.active {
+  @apply bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850];
+}

@@ -1,11 +1,14 @@
 import React, { use } from "react";
 import { FaGoogle } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { signInUser, handleGoogleLogIn } = use(AuthContext);
   const Navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
 
   // handle Login
   const handleLogIn = (event) => {
@@ -18,9 +21,15 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         const user = result.user;
-        alert("You are signed in successfully");
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "You has been signIn Successfully",
+          showConfirmButton: false,
+          timer: 2000,
+        });
         console.log(user);
-        Navigate("/");
+        Navigate(`${location.state ? location.state : "/"}`);
       })
       .catch((error) => {
         console.log(error);
@@ -32,7 +41,7 @@ const Login = () => {
     handleGoogleLogIn()
       .then((result) => {
         console.log(result.user);
-        Navigate("/");
+        Navigate(`${location.state ? location.state : "/"}`);
       })
       .catch((error) => {
         console.log(error);
@@ -62,9 +71,6 @@ const Login = () => {
               className="input rounded-full focus:border-0 focus:outline-gray-200"
               placeholder="Password"
             />
-            <div>
-              <a className="link link-hover">Forgot password?</a>
-            </div>
             <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850]">
               Login
             </button>

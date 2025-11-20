@@ -1,6 +1,7 @@
 import { User } from "lucide-react";
 import React, { use } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import Swal from "sweetalert2";
 
 const AddHabits = () => {
   const { user } = use(AuthContext);
@@ -11,10 +12,10 @@ const AddHabits = () => {
       userName: form.name.value,
       userEmail: form.email.value,
       title: form.habitTitle.value,
-      catogory: form.category.value,
+      category: form.category.value,
       reminderTime: form.reminderTime.value,
       description: form.description.value,
-      thumbnail: form.thumbnail.value,
+      imageUrl: form.thumbnail.value,
     };
     // save this user data to the database(via server)
     fetch("http://localhost:3000/habits", {
@@ -26,7 +27,13 @@ const AddHabits = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert("Successfully added");
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Your habit has been added successfully",
+          showConfirmButton: false,
+          timer: 2000,
+        });
         form.reset();
         console.log(data);
       })

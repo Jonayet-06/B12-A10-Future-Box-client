@@ -3,7 +3,7 @@ import React from "react";
 const HabitCard = ({ habit }) => {
   const { title, description, category, imageUrl, userName } = habit;
   return (
-    <div className="card bg-base-100 shadow-sm">
+    <div className="card bg-base-100 shadow-sm hover:scale-105 transition-transform">
       <figure>
         <img src={imageUrl} alt="Shoes" className="w-full h-[300px]" />
       </figure>
