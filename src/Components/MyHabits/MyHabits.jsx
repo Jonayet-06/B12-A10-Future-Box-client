@@ -29,9 +29,14 @@ const MyHabits = () => {
   const habitModalRef = useRef();
   const [currentHabit, setCurrentHabit] = useState(null);
 
+  // console.log("Token = ", user.accessToken);
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/myhabits?email=${user.email}`)
+      fetch(`http://localhost:3000/myhabits?email=${user.email}`, {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => setHabits(data))
         .catch((err) => console.log(err));
