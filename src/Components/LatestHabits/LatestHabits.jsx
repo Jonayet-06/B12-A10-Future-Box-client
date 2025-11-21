@@ -2,21 +2,36 @@ import React, { use, useEffect, useState } from "react";
 import HabitCard from "../HabitCard/HabitCard";
 import { AuthContext } from "../../Context/AuthContext";
 import Loading from "../Loading/Loading";
+import useAxios from "../Hooks/useAxios";
 
 const LatestHabits = () => {
   const [habits, setHabits] = useState([]);
   const { loading, setLoading } = use(AuthContext);
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     // Only load once on mount
-    fetch("http://localhost:3000/latest-habits")
-      .then((res) => res.json())
+    axiosInstance
+      .get("/latest-habits")
       .then((data) => {
-        setHabits(data);
+        console.log(data);
+        setHabits(data.data);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
+  // useEffect(() => {
+  //   // Only load once on mount
+  //   fetch("http://localhost:3000/latest-habits")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setHabits(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   if (loading) return <Loading />;
 

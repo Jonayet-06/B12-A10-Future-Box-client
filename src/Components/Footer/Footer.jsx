@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
 import { Mail } from "lucide-react";
-import { LuRotate3D } from "react-icons/lu";
 import logo from "../../assets/lifestyle.png";
 import { FaFacebook, FaInstagram } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
@@ -165,12 +164,13 @@ const Footer = () => {
                 <FaInstagram size={24} />
               </a>
             </div>
-            <div>
+            <div className="break-all">
               <a
                 href="mailto:support@nihonlearn.com"
                 className="flex items-center text-gray-600 dark:text-gray-200 hover:text-blue-600"
               >
-                <Mail size={18} className="mr-2" /> support@habittracklearn.com
+                <Mail size={18} className="mr-2" />
+                <span className="break-all">support@habittracklearn.com</span>
               </a>
             </div>
           </div>

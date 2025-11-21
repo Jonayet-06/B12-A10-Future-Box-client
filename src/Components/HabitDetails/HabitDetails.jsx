@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useLoaderData, useParams } from "react-router";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import useAxios from "../Hooks/useAxios";
+import Swal from "sweetalert2";
 
 // calculate Progress
 function calculateProgress(completionHistory) {
@@ -51,6 +53,7 @@ const HabitDetails = () => {
   const singleHabit = data.find((habit) => habit._id.toString() === id);
   const { _id, title, description, category, imageUrl, userName, userEmail } =
     singleHabit;
+  const axiosInstance = useAxios();
 
   const [indivisualHabit, setIndivisualHabit] = useState(singleHabit);
 
@@ -58,17 +61,22 @@ const HabitDetails = () => {
   const streak = calculateStreak(indivisualHabit.completionHistory || []);
 
   const handleComplete = async () => {
-    const res = await fetch(`http://localhost:3000/habits/${_id}/complete`, {
-      method: "POST",
-    });
-    const updated = await res.json();
+    const res = await axiosInstance.post(`/habits/${_id}/complete`);
+    const updated = await res.data;
     setIndivisualHabit(updated.habit || indivisualHabit);
+    Swal.fire({
+      icon: "success",
+      title: "Marked as complete!",
+      text: "Today's completion has been added.",
+      timer: 2000,
+      showConfirmButton: false,
+    });
   };
 
   return (
     <div className="max-w-7xl mx-auto">
       <div className="card p-4 border rounded-xl shadow">
-        <img src={imageUrl} className="rounded-lg h-300 w-full object-cover" />
+        <img src={imageUrl} className="rounded-lg h-200 w-full object-cover" />
 
         <h2 className="text-xl font-bold mt-2">{title}</h2>
         <p className="text-gray-600">{description}</p>

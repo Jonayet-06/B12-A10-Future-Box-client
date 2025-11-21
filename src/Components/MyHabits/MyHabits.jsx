@@ -3,6 +3,7 @@ import { AuthContext } from "../../Context/AuthContext";
 import Loading from "../Loading/Loading";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
+import useAxios from "../Hooks/useAxios";
 
 // Calculate current streak
 function calculateCurrentStreak(completionHistory) {
@@ -28,27 +29,43 @@ const MyHabits = () => {
   const [habits, setHabits] = useState([]);
   const habitModalRef = useRef();
   const [currentHabit, setCurrentHabit] = useState(null);
+  const axiosInstance = useAxios();
 
   // console.log("Token = ", user.accessToken);
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/myhabits?email=${user.email}`, {
-        headers: {
-          authorization: `Bearer ${user.accessToken}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => setHabits(data))
+      axiosInstance
+        .get(`/myhabits?email=${user.email}`, {
+          headers: {
+            authorization: `Bearer ${user.accessToken}`,
+          },
+        })
+        .then((data) => {
+          setHabits(data.data);
+        })
         .catch((err) => console.log(err));
     }
   }, [user]);
+
+  // useEffect(() => {
+  //   if (user?.email) {
+  //     fetch(`http://localhost:3000/myhabits?email=${user.email}`, {
+  //       headers: {
+  //         authorization: `Bearer ${user.accessToken}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => setHabits(data))
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [user]);
 
   const handleHabitModalOpen = (habit) => {
     setCurrentHabit(habit);
     habitModalRef.current.showModal();
   };
 
-  const handleUpdate = (event) => {
+  const handleUpdate = async (event) => {
     event.preventDefault();
     const form = event.target;
     const updatedData = {
@@ -60,31 +77,62 @@ const MyHabits = () => {
       description: form.description.value,
       thumbnail: form.thumbnail.value,
     };
-    fetch(`http://localhost:3000/habits/${currentHabit._id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedData),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your habit has been updated successfully",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        setHabits(
-          habits.map((h) =>
-            h._id === currentHabit._id ? { ...h, ...updatedData } : h
-          )
-        );
-        form.reset();
-      })
-      .catch((err) => console.log(err));
+    try {
+      await axiosInstance.patch(`/habits/${currentHabit._id}`, updatedData);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your habit has been updated successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      setHabits(
+        habits.map((h) =>
+          h._id === currentHabit._id ? { ...h, ...updatedData } : h
+        )
+      );
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
+  // const handleUpdate = (event) => {
+  //   event.preventDefault();
+  //   const form = event.target;
+  //   const updatedData = {
+  //     userName: form.name.value,
+  //     userEmail: form.email.value,
+  //     title: form.habitTitle.value,
+  //     category: form.category.value,
+  //     reminderTime: form.reminderTime.value,
+  //     description: form.description.value,
+  //     thumbnail: form.thumbnail.value,
+  //   };
+  //   fetch(`http://localhost:3000/habits/${currentHabit._id}`, {
+  //     method: "PATCH",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(updatedData),
+  //   })
+  //     .then((res) => res.json())
+  //     .then(() => {
+  //       Swal.fire({
+  //         position: "top-end",
+  //         icon: "success",
+  //         title: "Your habit has been updated successfully",
+  //         showConfirmButton: false,
+  //         timer: 2000,
+  //       });
+  //       setHabits(
+  //         habits.map((h) =>
+  //           h._id === currentHabit._id ? { ...h, ...updatedData } : h
+  //         )
+  //       );
+  //       form.reset();
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -93,31 +141,56 @@ const MyHabits = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/habits/${id}`, { method: "DELETE" })
-          .then((res) => res.json())
-          .then(() => {
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your habit has been deleted.",
-              icon: "success",
-            });
-            const remainingHabits = habits.filter((habit) => habit._id !== id);
-            setHabits(remainingHabits);
-            setLoading(false);
-          })
-          .catch((err) => console.log(err));
+        try {
+          axiosInstance.delete(`/habits/${id}`);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your habit has been deleted.",
+            icon: "success",
+          });
+          const remainingHabits = habits.filter((habit) => habit._id !== id);
+          setHabits(remainingHabits);
+          setLoading(false);
+        } catch (err) {
+          console.log(err);
+        }
       }
     });
   };
+  // const handleDelete = (id) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You won't be able to revert this!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete it!",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       fetch(`http://localhost:3000/habits/${id}`, { method: "DELETE" })
+  //         .then((res) => res.json())
+  //         .then(() => {
+  //           Swal.fire({
+  //             title: "Deleted!",
+  //             text: "Your habit has been deleted.",
+  //             icon: "success",
+  //           });
+  //           const remainingHabits = habits.filter((habit) => habit._id !== id);
+  //           setHabits(remainingHabits);
+  //           setLoading(false);
+  //         })
+  //         .catch((err) => console.log(err));
+  //     }
+  //   });
+  // };
 
   const handleComplete = async (id) => {
-    const res = await fetch(`http://localhost:3000/habits/${id}/complete`, {
-      method: "POST",
-    });
-
-    const data = await res.json();
+    const res = await axiosInstance.post(`/habits/${id}/complete`);
+    console.log(res);
+    const data = await res.data;
 
     setHabits(
       habits.map((h) =>
@@ -177,7 +250,7 @@ const MyHabits = () => {
                   <td>{habit.category}</td>
                   <td>{calculateCurrentStreak(habit.completionHistory)}</td>
                   <td>{new Date(habit.createdAt).toLocaleDateString()}</td>
-                  <td className="flex gap-2">
+                  <td className="flex flex-wrap gap-2">
                     <motion.button
                       className="btn bg-linear-to-r from-[#11998e] via-[#38ef7d] to-[#0fd850] text-white"
                       whileHover={{ scale: 1.05 }}

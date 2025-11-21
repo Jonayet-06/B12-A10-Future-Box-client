@@ -3,23 +3,36 @@ import PublicHabitCard from "../PublicHabitCard/PublicHabitCard";
 import { AuthContext } from "../../Context/AuthContext";
 import Loading from "../Loading/Loading";
 import { motion, AnimatePresence } from "framer-motion";
+import useAxios from "../Hooks/useAxios";
 
 const PublicHabits = () => {
   const { loading, setLoading } = use(AuthContext);
   const [habits, setHabits] = useState([]);
   const [search, setSearch] = useState("");
-  console.log(search);  
+  const axiosInstance = useAxios();
+  console.log(search);
 
   useEffect(() => {
-    fetch("http://localhost:3000/habits")
-      .then((res) => res.json())
-      .then((data) => {
+    try {
+      axiosInstance.get("/habits").then((data) => {
         console.log(data);
-        setHabits(data);
+        setHabits(data.data);
         setLoading(false);
-      })
-      .catch((error) => console.log(error));
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, [setLoading]);
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/habits")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       setHabits(data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, [setLoading]);
 
   if (loading) {
     return <Loading />;
