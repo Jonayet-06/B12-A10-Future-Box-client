@@ -18,7 +18,7 @@ const AddHabits = () => {
       imageUrl: form.thumbnail.value,
     };
     // save this user data to the database(via server)
-    fetch("http://localhost:3000/habits", {
+    fetch("https:/b12-a10-future-box-server-omega.vercel.app/habits", {
       method: "POST",
       headers: {
         "content-type": "application/json",

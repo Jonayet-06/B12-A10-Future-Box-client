@@ -35,7 +35,8 @@ const router = createBrowserRouter([
       },
       {
         path: "habitdetails/:id",
-        loader: () => fetch(`http://localhost:3000/habits`),
+        loader: () =>
+          fetch(`https://b12-a10-future-box-server-omega.vercel.app//habits`),
         element: (
           <PrivateRoute>
             <HabitDetails></HabitDetails>

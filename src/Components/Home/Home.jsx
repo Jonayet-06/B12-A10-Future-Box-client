@@ -5,7 +5,7 @@ import ReleventOne from "../Relevent/ReleventOne";
 import Relevent from "../Relevent/Relevent";
 import LatestHabits from "../LatestHabits/LatestHabits";
 
-// const latestHabitsPromise = fetch("http://localhost:3000/latest-habits").then(
+// const latestHabitsPromise = fetch("https://b12-a10-future-box-server-omega.vercel.app//latest-habits").then(
 //   (res) => res.json()
 // );
 const Home = () => {

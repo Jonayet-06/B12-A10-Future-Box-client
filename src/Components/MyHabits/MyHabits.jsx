@@ -49,7 +49,7 @@ const MyHabits = () => {
 
   // useEffect(() => {
   //   if (user?.email) {
-  //     fetch(`http://localhost:3000/myhabits?email=${user.email}`, {
+  //     fetch(`https://b12-a10-future-box-server-omega.vercel.app//myhabits?email=${user.email}`, {
   //       headers: {
   //         authorization: `Bearer ${user.accessToken}`,
   //       },
@@ -108,7 +108,7 @@ const MyHabits = () => {
   //     description: form.description.value,
   //     thumbnail: form.thumbnail.value,
   //   };
-  //   fetch(`http://localhost:3000/habits/${currentHabit._id}`, {
+  //   fetch(`https://b12-a10-future-box-server-omega.vercel.app//habits/${currentHabit._id}`, {
   //     method: "PATCH",
   //     headers: { "Content-Type": "application/json" },
   //     body: JSON.stringify(updatedData),
@@ -170,7 +170,7 @@ const MyHabits = () => {
   //     confirmButtonText: "Yes, delete it!",
   //   }).then((result) => {
   //     if (result.isConfirmed) {
-  //       fetch(`http://localhost:3000/habits/${id}`, { method: "DELETE" })
+  //       fetch(`https://b12-a10-future-box-server-omega.vercel.app//habits/${id}`, { method: "DELETE" })
   //         .then((res) => res.json())
   //         .then(() => {
   //           Swal.fire({

@@ -24,7 +24,7 @@ const LatestHabits = () => {
   }, []);
   // useEffect(() => {
   //   // Only load once on mount
-  //   fetch("http://localhost:3000/latest-habits")
+  //   fetch("https://b12-a10-future-box-server-omega.vercel.app//latest-habits")
   //     .then((res) => res.json())
   //     .then((data) => {
   //       setHabits(data);

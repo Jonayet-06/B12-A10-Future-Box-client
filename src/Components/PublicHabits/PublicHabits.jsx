@@ -24,7 +24,7 @@ const PublicHabits = () => {
     }
   }, [setLoading]);
   // useEffect(() => {
-  //   fetch("http://localhost:3000/habits")
+  //   fetch("https://b12-a10-future-box-server-omega.vercel.app//habits")
   //     .then((res) => res.json())
   //     .then((data) => {
   //       console.log(data);
